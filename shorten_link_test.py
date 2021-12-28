@@ -24,7 +24,7 @@ links_list_doubles_: list
 # Opens some arbitrary web resource to copy its links
 # to use them in testing.
 links_url_: str = 'https://www.techjob.co.il/salary-survey'
-drv_path_: str = abspath('../read_clipboard/driver_').replace('/', os.path.sep)
+drv_path_: str = abspath('../TinyURL_test/driver_').replace('/', os.path.sep)
 drv_name_: str = 'chromedriver.exe'
 servc_ = Service(drv_path_ + os.path.sep + drv_name_)
 drv_chrome_ops_ = webdriver.ChromeOptions()
@@ -56,15 +56,23 @@ except requests.ConnectionError:
 waiting_ = WebDriverWait(default_wbd_, 100).until(expect_conds_.presence_of_element_located((By.TAG_NAME, 'a')))
 # Links on page as web elements
 links_on_pg_: list = default_wbd_.find_elements(By.TAG_NAME, 'a')
+links_on_pg_ = list(set(links_on_pg_)) # Makes a list of unique values removing repetitions.
 # Extracts link hrefs into string list
 links_list_ = [next_lnk.get_attribute('href') for next_lnk in links_on_pg_]
 # Creates link list with each link doubled.
 # It is needed to ensure that repetitive shortening
 # returns the same shorten link
-# links_list_doubles_ = []
 for i in range(0, links_list_.__len__()):
     links_list_doubles_.append(links_list_[i])
     links_list_doubles_.append(links_list_[i])
+
+
+# Checking [links_list_doubles_]
+print(
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'  # Upper border
+    '[links_list_doubles_]\n' +
+    str(links_list_doubles_) +
+    '\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')  #Lower border
 
 # Opens TinyURS for testing
 default_wbd_.get('https://tinyurl.com/app/')
@@ -76,7 +84,7 @@ print(
     'Testing is started.\n\n'
     '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')  # Lower border
 from test_part_2 import test_part_two
-test_part_two()
+test_part_two(default_wbd_, links_list_doubles_)
 
 
 if __name__ == '__main__':

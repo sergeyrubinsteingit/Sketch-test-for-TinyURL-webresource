@@ -7,15 +7,16 @@ from generate_alias import generate_hash
 # from shorten_link_test import testing_preparations
 
 
-def test_part_two():
+def test_part_two(_default_wbd_, _links_list_doubles_):
+    wbd_ = _default_wbd_
     print(
         '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n'  # Upper border
         'Second part of the test.\n\n'
         '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n')  # Lower border
 
-    import shorten_link_test
-    from shorten_link_test import default_wbd_, links_list_, links_list_doubles_
-    wbd_ = default_wbd_
+    # import shorten_link_test
+    # from shorten_link_test import default_wbd_, links_list_, links_list_doubles_
+    # from shorten_link_test import links_list_
 
     # Waiting till website is loaded
     WebDriverWait(wbd_, 100).until(expect_conds_.visibility_of_element_located((By.TAG_NAME, 'body')))
@@ -24,13 +25,14 @@ def test_part_two():
     wbd_.implicitly_wait(20)
     cookies_butt_.click()
     # Repeatedly shorten links from the list
-    for idx_ in range(0, links_list_.__len__()):  # Repeats the operation for each link
+    for idx_ in range(0, _links_list_doubles_.__len__()):  # Repeats the operation for each link
         # run generate_alias
         generate_hash()  # a foo generating random hash for an alias
         wbd_.implicitly_wait(20)
         # Prints link into Input field
         inp_field_ = wbd_.find_element(By.TAG_NAME, 'input').send_keys(
-            shorten_link_test.links_list_doubles_[idx_])
+            # shorten_link_test.links_list_doubles_[idx_])
+            _links_list_doubles_[idx_])
         wbd_.implicitly_wait(20)
         # Creates an alias
         als_field_ = wbd_.find_element(By.XPATH, '//input[@placeholder="alias"]')
